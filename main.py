@@ -17,16 +17,15 @@ def end_game(stdscr,exit_msg=''):
 	curses.endwin()
 	print(exit_msg)
 
-def handle_signals(stdscr):
+def handle_signals(stdscr,gs):
 	def handler(signum, frame):
-		end_game(stdscr)
+		end_game(stdscr,exit_msg=str(gs['pos']))
 		exit(1)
 	signal.signal(signal.SIGINT , handler)
 	signal.signal(signal.SIGTERM, handler)
 
 def init_curses():
 	stdscr = curses.initscr()
-	handle_signals(stdscr)
 
 	curses.noecho()
 	curses.cbreak()
@@ -37,10 +36,8 @@ def init_curses():
 
 	return stdscr
 
-def load_game_state(string):
+def load_game_state(string,pos):
 	stdscr = init_curses()
-
-	pos = 0
 
 	game_state = {
 		'stdscr'    : stdscr,
@@ -117,11 +114,12 @@ def draw_screen(start_pos, gs):
 	else:
 		screen.move(*cursor_end_pos)
 
-def main(file_name):
+def main(file_name,pos):
 	data = readfile(file_name)
-	game_state = load_game_state(data)
+	game_state = load_game_state(data,pos)
+	handle_signals(game_state['stdscr'],game_state)
 	run_game(game_state)
 
 
 if __name__ == '__main__':
-	main(sys.argv[1])
+	main(sys.argv[1],int(sys.argv[2]))
