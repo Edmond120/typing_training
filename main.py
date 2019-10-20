@@ -76,10 +76,10 @@ def _run_game(gs):
 	while gs['pos'] < len(text):
 		key = stdscr.getkey()
 		if key == text[gs['pos']]:
-			stdscr.addstr(key,curses.A_STANDOUT)
+			stdscr.addstr(key,curses.A_UNDERLINE)
 			gs['pos'] += 1
 		elif key == 'KEY_RIGHT':
-			stdscr.addstr(gs['text'][gs['pos']],curses.A_STANDOUT)
+			stdscr.addstr(gs['text'][gs['pos']],curses.A_UNDERLINE)
 			gs['pos'] += 1
 		elif key != backspace:
 			y, x = stdscr.getyx()
@@ -103,7 +103,7 @@ def draw_screen(start_pos, gs):
 	i = start_pos
 	while i < len(string):
 		if i < pos:
-			screen.addstr(string[i],curses.A_STANDOUT)
+			screen.addstr(string[i],curses.A_UNDERLINE)
 		elif i == pos:
 			cursor_end_pos = screen.getyx()
 			screen.addstr(string[i])
