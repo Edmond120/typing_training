@@ -60,7 +60,7 @@ def run_game(gs):
 def check_bound(screen):
 	height, width = screen.getmaxyx()
 	y, x = screen.getyx()
-	return y >= height - 1 or x >= width - 1
+	return y >= height - 1 or x >= width -1
 
 def _run_game(gs):
 	stdscr = gs['stdscr']
@@ -71,6 +71,8 @@ def _run_game(gs):
 
 	backspace = '\x7f'
 	while gs['pos'] < len(text):
+		if check_bound(stdscr):
+			draw_screen(gs['pos'],gs)
 		key = stdscr.getkey()
 		if key == text[gs['pos']]:
 			stdscr.addstr(key,curses.A_UNDERLINE)
@@ -88,8 +90,6 @@ def _run_game(gs):
 			stdscr.addstr(gs['text'][gs['pos']])
 			stdscr.move(y,x)
 			stdscr.refresh()
-		if check_bound(stdscr):
-			draw_screen(gs['pos'],gs)
 		stdscr.refresh()
 
 def draw_screen(start_pos, gs):
@@ -99,6 +99,8 @@ def draw_screen(start_pos, gs):
 	cursor_end_pos = None
 	i = start_pos
 	while i < len(string):
+		if check_bound(screen):
+			break
 		if i < pos:
 			screen.addstr(string[i],curses.A_UNDERLINE)
 		elif i == pos:
@@ -106,8 +108,6 @@ def draw_screen(start_pos, gs):
 			screen.addstr(string[i])
 		else:
 			screen.addstr(string[i])
-		if check_bound(screen):
-			break
 		i += 1
 	if cursor_end_pos == None:
 		raise Exception('draw_screen error, cursor_end_pos is None')
