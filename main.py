@@ -15,7 +15,7 @@ def end_game(stdscr,exit_msg=''):
 	curses.nocbreak()
 	stdscr.keypad(False)
 	curses.endwin()
-	print(exit_msg)
+	print(exit_msg,file=sys.stderr)
 
 def handle_signals(stdscr,gs):
 	def handler(signum, frame):
